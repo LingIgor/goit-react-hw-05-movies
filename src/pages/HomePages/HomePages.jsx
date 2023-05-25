@@ -16,7 +16,7 @@ const Home = () => {
     <div>
       <List>
         {trends.map(el => (
-          <Link to="/movies/:movieId" key={el.id}>
+          <Link to={{pathname: `/movies/${el.id}`}} key={el.id}>
             {el.original_title}
           </Link>
         ))}
