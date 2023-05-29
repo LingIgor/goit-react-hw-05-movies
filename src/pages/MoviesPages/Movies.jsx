@@ -46,8 +46,6 @@ const Movies = () => {
     setSearchparams({ query: e.target.value });
   };
 
-  console.log(search);
-
   return (
     <>
       <Form onSubmit={handleSubmit}>
