@@ -7,6 +7,7 @@ const MovieDetails = () => {
   const { movieId } = useParams();
 
   const location = useLocation();
+  console.log(location);
 
   const baseUrl = 'https://image.tmdb.org/t/p/w500/';
 

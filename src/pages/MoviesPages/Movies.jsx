@@ -1,47 +1,55 @@
-import { searchMovies } from 'api/api';
-import SearchMovie from 'components/Search/SearchMovie';
 import { List } from 'pages/HomePages/home.styled';
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { searchMovies } from 'api/api';
 
 const Movies = () => {
   const [search, setSearch] = useState([]);
-  const [word, setWord] = useState('');
-  const [params, setParams] = useSearchParams();
-
-  const fot = params.get('query') ?? '';
-
+  const [searchParams, setSearchparams] = useSearchParams();
   const location = useLocation();
+  const query = searchParams.get('query');
 
-  const onSubmit = query => {
-    setWord(query);
+  const findMovies = async () => {
+    if (!query) return;
+
+    try {
+      const { results } = await searchMovies(query);
+      setSearch(results);
+      console.log(results);
+    } catch (error) {}
   };
 
   useEffect(() => {
-    const Movie = async () => {
-      try {
-        const { data } = await searchMovies(word);
-        setSearch(data);
-      } catch (error) {}
-    };
-    Movie();
-    setWord(fot);
-  }, [word, fot]);
+    findMovies(query);
+  }, []);
 
-  const { results } = search;
+  const handleSubmit = e => {
+    e.preventDefault();
+    findMovies();
+  };
+
+  const updateInput = e => {
+    setSearchparams({ query: e.target.value });
+  };
 
   return (
     <>
-      <SearchMovie onSubmit={onSubmit} />
-
-      <List>
-        {results &&
-          results.map(({ title, id }) => (
-            <Link to={`/movies/${id}`} state={{ from: location }} key={id}>
-              {title}
-            </Link>
-          ))}
-      </List>
+      <form onSubmit={handleSubmit}>
+        <label>
+          <input type="text" onChange={updateInput} />
+          <button type="submit">Search</button>
+        </label>
+      </form>
+      <div>
+        <List>
+          {search &&
+            search.map(({ title, id }) => (
+              <Link to={`/movies/${id}`} state={{ from: location }} key={id}>
+                {title}
+              </Link>
+            ))}
+        </List>
+      </div>
     </>
   );
 };
