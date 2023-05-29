@@ -25,14 +25,14 @@ export const getMoviesDeteils = async movieId => {
 };
 
 export const getMoviesCredits = async movieId => {
-  const data = await axios.get(
+  const { data } = await axios.get(
     `${BASE_URL}/movie/${movieId}/credits?api_key=${API_KEY}&language=en-US`
   );
   return data;
 };
 
 export const getMoviesReviews = async movieId => {
-  const data = await axios.get(
+  const { data } = await axios.get(
     `${BASE_URL}/movie/${movieId}/reviews?api_key=${API_KEY}&language=en-US`
   );
   return data;
