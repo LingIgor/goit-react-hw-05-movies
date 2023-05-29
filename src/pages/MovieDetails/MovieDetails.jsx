@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { getMoviesDeteils } from 'api/api';
-import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
+import { Outlet, useLocation, useParams } from 'react-router-dom';
+
+import { Back, Text, Wrap, Wrapper } from './MovieDetailStyled';
 
 const MovieDetails = () => {
   const [details, setDetails] = useState('');
@@ -35,7 +37,7 @@ const MovieDetails = () => {
   return (
     <div>
       <div>
-        <Link to={location.state?.from ?? '/'}>Go back</Link>
+        <Back to={location.state?.from ?? '/'}>Go back</Back>
       </div>
 
       {status === 'pending' && 'Loading...'}
@@ -43,18 +45,24 @@ const MovieDetails = () => {
 
       {status === 'resolved' && (
         <div>
-          <img src={`${baseUrl}${poster_path}`} alt={title} />
-          {<h1>{title}</h1>}
-          <p>User score: {userScore}</p>
-          <h2>Overview</h2>
-          <p>{overview}</p>
-          <h2>Genres</h2>
-          {genres && genres.map(el => <p key={el.id}>{el.name}</p>)}
-          <div>
-            <p>Additional information</p>
-            <Link to="cast"> Cast </Link>
-            <Link to="reviews"> Reviews </Link>
-          </div>
+          <Wrap>
+            <div>
+              <img src={`${baseUrl}${poster_path}`} alt={title} width="600px" />
+            </div>
+            <div>
+              {<h1>{title}</h1>}
+              <Text>User score: {userScore}</Text>
+              <h2>Overview</h2>
+              <Text>{overview}</Text>
+              <h2>Genres</h2>
+              {genres && genres.map(el => <Text key={el.id}>{el.name}</Text>)}
+            </div>
+          </Wrap>
+          <Wrapper>
+            <Text>Additional information</Text>
+            <Back to="cast"> Cast </Back>
+            <Back to="reviews"> Reviews </Back>
+          </Wrapper>
         </div>
       )}
       <Outlet />

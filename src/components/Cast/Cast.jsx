@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import { getMoviesCredits } from 'api/api';
 import { useParams } from 'react-router-dom';
 
+import { Actors } from './castStyled';
+import { Text } from 'pages/MovieDetails/MovieDetailStyled';
+
 const Cast = () => {
   const [actors, setActors] = useState([]);
   const [error, setError] = useState(null);
@@ -33,14 +36,14 @@ const Cast = () => {
       {status === 'pending' && 'Loading...'}
       {status === 'rejected' && <h3>{error.message}</h3>}
       {status === 'resolved' && (
-        <ul>
+        <Actors>
           {cast.length === 0 && (
             <h1>We don't have any information about the cast yet.</h1>
           )}
           {cast &&
             cast.map(el => (
               <li key={el.id}>
-                <p>{el.name}</p>
+                <Text>{el.name}</Text>
                 <img
                   src={`${baseUrl}${el.profile_path}`}
                   alt={el.name}
@@ -48,7 +51,7 @@ const Cast = () => {
                 />
               </li>
             ))}
-        </ul>
+        </Actors>
       )}
     </>
   );

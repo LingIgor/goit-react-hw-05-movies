@@ -1,7 +1,9 @@
 import { List } from 'pages/HomePages/home.styled';
 import { useEffect, useState } from 'react';
-import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { searchMovies } from 'api/api';
+import { Input, Form, Button, Label } from './Movies.styled';
+import { Div, Linkser } from 'pages/HomePages/home.styled';
 
 const Movies = () => {
   const [search, setSearch] = useState([]);
@@ -33,6 +35,10 @@ const Movies = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
+    if (!query) {
+      alert('sorry');
+      return;
+    }
     findMovies();
   };
 
@@ -40,27 +46,35 @@ const Movies = () => {
     setSearchparams({ query: e.target.value });
   };
 
+  console.log(search);
+
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <label>
-          <input type="text" onChange={updateInput} />
-          <button type="submit">Search</button>
-        </label>
-      </form>
+      <Form onSubmit={handleSubmit}>
+        <Label>
+          <Input type="text" onChange={updateInput} />
+          <Button type="submit">Search</Button>
+        </Label>
+      </Form>
       <div>
         {status === 'pending' && 'Loading...'}
         {status === 'rejected' && <h3>{error.message}</h3>}
 
         {status === 'resolved' && (
-          <List>
-            {search &&
-              search.map(({ title, id }) => (
-                <Link to={`/movies/${id}`} state={{ from: location }} key={id}>
-                  {title}
-                </Link>
-              ))}
-          </List>
+          <Div>
+            <List>
+              {search &&
+                search.map(({ title, id }) => (
+                  <Linkser
+                    to={`/movies/${id}`}
+                    state={{ from: location }}
+                    key={id}
+                  >
+                    {title}
+                  </Linkser>
+                ))}
+            </List>
+          </Div>
         )}
       </div>
     </>

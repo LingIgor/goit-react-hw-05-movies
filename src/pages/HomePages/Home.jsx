@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { getTrendMovies } from 'api/api';
-import { Link } from 'react-router-dom';
-import { List } from './home.styled';
+
+import { List, Div } from './home.styled';
+import { Linkser } from './home.styled';
 
 const Home = () => {
   const [trend, setTrend] = useState();
@@ -29,14 +30,17 @@ const Home = () => {
       {status === 'rejected' && <h3>{error.message}</h3>}
 
       {status === 'resolved' && (
-        <List>
-          {trend &&
-            trend.map(({ title, id }) => (
-              <Link to={`/movies/${id}`} key={id}>
-                {title}
-              </Link>
-            ))}
-        </List>
+        <Div>
+          <h1>Trending films</h1>
+          <List>
+            {trend &&
+              trend.map(({ title, id }) => (
+                <Linkser to={`/movies/${id}`} key={id}>
+                  {title}
+                </Linkser>
+              ))}
+          </List>
+        </Div>
       )}
     </div>
   );
